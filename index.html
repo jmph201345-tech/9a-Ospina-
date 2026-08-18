@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ciudad Inteligente | Inicio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #000000;
+      color: #00E5FF;
+      font-family: 'Poppins', Arial, sans-serif;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+
+    .encabezado {
+      background: linear-gradient(135deg, #00E5FF, #0D47A1);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 18px 20px;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
+      margin-bottom: 24px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .encabezado:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px rgba(0, 229, 255, 0.8);
+    }
+
+    .encabezado .icono {
+      font-size: 32px;
+      line-height: 1;
+      animation: flotar 3s ease-in-out infinite;
+    }
+
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .contenedor {
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .nombre {
+      font-size: 44px;
+      color: #00E5FF;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-shadow: 0 0 18px rgba(0, 229, 255, 0.7);
+    }
+
+    .subtitulo {
+      font-size: 28px;
+      color: #00E5FF;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
+    }
+
+    .texto {
+      font-size: 20px;
+      color: #4FC3F7;
+      text-align: center;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .botones {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin: 24px 0;
+    }
+
+    .boton {
+      display: inline-block;
+      background: #00E5FF;
+      color: #000000;
+      border: 2px solid #00E5FF;
+      border-radius: 15px;
+      padding: 15px 34px;
+      font-size: 20px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+      transition: background 0.3s ease, color 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
+    }
+
+    .boton:hover {
+      background: #0D47A1;
+      color: #00E5FF;
+      border-color: #00E5FF;
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.9);
+    }
+
+    .boton:active {
+      transform: translateY(0);
+    }
+
+    .tarjeta {
+      background: #050810;
+      border: 2px solid #00E5FF;
+      border-radius: 15px;
+      padding: 40px 30px;
+      margin: 26px 0;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .tarjeta:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 35px rgba(0, 229, 255, 0.5);
+    }
+
+    .avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00E5FF, #0D47A1);
+      color: #FFFFFF;
+      font-size: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.6);
+    }
+
+    .tabla-wrapper {
+      overflow-x: auto;
+      border-radius: 15px;
+      border: 2px solid #00E5FF;
+      margin-top: 16px;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+    }
+
+    .tabla {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 20px;
+    }
+
+    .tabla th,
+    .tabla td {
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      padding: 12px 14px;
+      text-align: center;
+    }
+
+    .tabla th {
+      background: #0D47A1;
+      color: #00E5FF;
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .tabla td {
+      color: #4FC3F7;
+      transition: background 0.3s ease;
+    }
+
+    .tabla tr:nth-child(even) td {
+      background: rgba(0, 229, 255, 0.06);
+    }
+
+    .tabla tr:hover td {
+      background: rgba(0, 229, 255, 0.15);
+      color: #00E5FF;
+    }
+
+    .tabla tr {
+      animation: entradaFila 0.6s ease both;
+    }
+
+    .tabla tr:nth-child(1) { animation-delay: 0.05s; }
+    .tabla tr:nth-child(2) { animation-delay: 0.12s; }
+    .tabla tr:nth-child(3) { animation-delay: 0.19s; }
+    .tabla tr:nth-child(4) { animation-delay: 0.26s; }
+    .tabla tr:nth-child(5) { animation-delay: 0.33s; }
+    .tabla tr:nth-child(6) { animation-delay: 0.40s; }
+    .tabla tr:nth-child(7) { animation-delay: 0.47s; }
+    .tabla tr:nth-child(8) { animation-delay: 0.54s; }
+    .tabla tr:nth-child(9) { animation-delay: 0.61s; }
+
+    @keyframes entradaFila {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .oculto {
+      display: none;
+    }
+
+    .pie {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 20px;
+      color: #00E5FF;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="encabezado">
+    <span class="icono">🏙️</span>
+    CIUDAD INTELIGENTE
+    <span class="icono">🚗</span>
+  </header>
+
+  <div class="contenedor">
+    <h1 class="nombre">Mateo Ospina Jimenez</h1>
+    <p class="subtitulo">Grado 9A · Liceo Santa Bernardita</p>
+
+    <div class="botones">
+      <button class="boton" id="btn-presentacion">Perfil</button>
+      <button class="boton" id="btn-horario">Información</button>
+      <a class="boton" href="registro.html">Registrarse</a>
+    </div>
+
+    <div class="tarjeta" id="seccion-presentacion">
+      <div class="avatar">👨‍🎓</div>
+      <h2 class="subtitulo">Mateo Ospina Jimenez</h2>
+      <p class="texto">Grado 9A · Liceo Santa Bernardita</p>
+    </div>
+
+    <div class="tarjeta oculto" id="seccion-horario">
+      <h2 class="subtitulo">Horario Escolar</h2>
+      <div class="tabla-wrapper">
+        <table class="tabla">
+          <tr>
+            <th>Día 1</th>
+            <th>Día 2</th>
+            <th>Día 3</th>
+            <th>Día 4</th>
+            <th>Día 5</th>
+            <th>Día 6</th>
+            <th>Día 7</th>
+          </tr>
+          <tr>
+            <td>Biología</td>
+            <td>Edu. Física</td>
+            <td>Español</td>
+            <td>Francés</td>
+            <td>Biología</td>
+            <td>Edu. Física</td>
+            <td>Inglés</td>
+          </tr>
+          <tr>
+            <td>Matemáticas</td>
+            <td>Sociales</td>
+            <td>Sociales</td>
+            <td>Español</td>
+            <td>Matemáticas</td>
+            <td>Inglés</td>
+            <td>Sociales</td>
+          </tr>
+          <tr>
+            <td>Descanso</td>
+            <td>Descanso</td>
+            <td>Descanso</td>
+            <td>Descanso</td>
+            <td>Descanso</td>
+            <td>Descanso</td>
+            <td>Descanso</td>
+          </tr>
+          <tr>
+            <td>Español</td>
+            <td>Filosofía</td>
+            <td>Matemáticas</td>
+            <td>Informática</td>
+            <td>Inglés</td>
+            <td>Francés</td>
+            <td>Informática</td>
+          </tr>
+          <tr>
+            <td>Sociales</td>
+            <td>Matemáticas</td>
+            <td>Física</td>
+            <td>Inglés</td>
+            <td>Sociales</td>
+            <td>Matemáticas</td>
+            <td>Química</td>
+          </tr>
+          <tr>
+            <td>Francés</td>
+            <td>SKILLS</td>
+            <td>Danzas</td>
+            <td>Ética</td>
+            <td>Dibujo</td>
+            <td>Sociales</td>
+            <td>Biología</td>
+          </tr>
+          <tr>
+            <td>Cátedra</td>
+            <td>Español</td>
+            <td>PILEO</td>
+            <td>Dibujo</td>
+            <td>PILEO</td>
+            <td>Español</td>
+            <td>Inglés</td>
+          </tr>
+          <tr>
+            <td>Inglés</td>
+            <td>Inglés</td>
+            <td>Biología</td>
+            <td>Matemáticas</td>
+            <td>Danzas</td>
+            <td>Informática</td>
+            <td>Matemáticas</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <p class="pie">© 2026 Ciudad Inteligente · Mateo Ospina Jimenez</p>
+  </div>
+
+  <script>
+    const seccionPresentacion = document.getElementById("seccion-presentacion");
+    const seccionHorario = document.getElementById("seccion-horario");
+    const btnPresentacion = document.getElementById("btn-presentacion");
+    const btnHorario = document.getElementById("btn-horario");
+
+    btnPresentacion.addEventListener("click", function () {
+      seccionHorario.classList.add("oculto");
+      const oculta = seccionPresentacion.classList.toggle("oculto");
+      if (!oculta) {
+        seccionPresentacion.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+
+    btnHorario.addEventListener("click", function () {
+      seccionPresentacion.classList.add("oculto");
+      const oculta = seccionHorario.classList.toggle("oculto");
+      if (!oculta) {
+        seccionHorario.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  </script>
+
+</body>
+</html>
