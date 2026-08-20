@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ciudad Inteligente | Registro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at 20% 15%, rgba(0, 229, 255, 0.08), transparent 45%), #001B3A;
+      color: #00E5FF;
+      font-family: 'Poppins', Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px;
+    }
+
+    .encabezado {
+      background: linear-gradient(135deg, #00E5FF, #0D47A1);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 18px 20px;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
+      margin-bottom: 30px;
+      width: 100%;
+      max-width: 560px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .encabezado:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px rgba(0, 229, 255, 0.8);
+    }
+
+    .encabezado .icono {
+      font-size: 32px;
+      line-height: 1;
+      animation: flotar 3s ease-in-out infinite;
+    }
+
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .tarjeta {
+      background: #06142E;
+      border: 2px solid #00E5FF;
+      border-radius: 15px;
+      padding: 40px 30px;
+      width: 100%;
+      max-width: 560px;
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.35);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .tarjeta:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 40px rgba(0, 229, 255, 0.55);
+    }
+
+    .titulo {
+      font-size: 44px;
+      color: #00E5FF;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-shadow: 0 0 18px rgba(0, 229, 255, 0.7);
+    }
+
+    .subtitulo {
+      font-size: 24px;
+      color: #00E5FF;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
+    }
+
+    .texto {
+      font-size: 20px;
+      color: #4FC3F7;
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      text-align: left;
+    }
+
+    .campo label {
+      display: block;
+      font-size: 20px;
+      font-weight: 600;
+      color: #00E5FF;
+      margin-bottom: 8px;
+    }
+
+    .campo input {
+      width: 100%;
+      padding: 14px 16px;
+      background: #03142E;
+      border: 2px solid #00E5FF;
+      border-radius: 15px;
+      color: #00E5FF;
+      font-size: 20px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .campo input::placeholder {
+      color: #1F6F8B;
+    }
+
+    .campo input:focus {
+      border-color: #4FC3F7;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
+    }
+
+    .boton {
+      display: inline-block;
+      width: 100%;
+      background: #00E5FF;
+      color: #000000;
+      border: 2px solid #00E5FF;
+      border-radius: 15px;
+      padding: 15px 34px;
+      font-size: 20px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+      margin-top: 6px;
+      transition: background 0.3s ease, color 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
+    }
+
+    .boton:hover {
+      background: #0D47A1;
+      color: #00E5FF;
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.9);
+    }
+
+    .boton:active {
+      transform: translateY(0);
+    }
+
+    .enlace {
+      display: inline-block;
+      margin-top: 20px;
+      color: #00E5FF;
+      font-size: 20px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .enlace:hover {
+      color: #4FC3F7;
+      text-shadow: 0 0 12px rgba(0, 229, 255, 0.8);
+    }
+
+    .mensaje {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 15px;
+      font-size: 20px;
+      font-weight: 600;
+      display: none;
+      text-align: center;
+    }
+
+    .mensaje.error {
+      display: block;
+      background: rgba(239, 83, 80, 0.15);
+      color: #FF8A80;
+      border: 2px solid #EF5350;
+      box-shadow: 0 0 15px rgba(239, 83, 80, 0.4);
+    }
+
+    .mensaje.exito {
+      display: block;
+      background: rgba(0, 229, 255, 0.15);
+      color: #00E5FF;
+      border: 2px solid #00E5FF;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="encabezado">
+    <span class="icono">🏙️</span>
+    CIUDAD INTELIGENTE
+  </header>
+
+  <div class="tarjeta">
+    <h1 class="titulo">Registro</h1>
+    <p class="subtitulo">Únete a la Ciudad Inteligente</p>
+    <p class="texto">Registra tu nombre de usuario y contraseña para acceder a los servicios de la ciudad.</p>
+
+    <form id="form-registro">
+      <div class="campo">
+        <label for="nombre">Usuario</label>
+        <input type="text" id="nombre" placeholder="Escribe tu nombre de usuario">
+      </div>
+
+      <div class="campo">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" placeholder="Escribe tu contraseña">
+      </div>
+
+      <button type="submit" class="boton">Registrarse</button>
+    </form>
+
+    <div id="mensaje" class="mensaje"></div>
+
+    <a href="index.html" class="enlace">← Volver</a>
+  </div>
+
+  <script>
+    const form = document.getElementById("form-registro");
+    const mensaje = document.getElementById("mensaje");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const usuario = document.getElementById("nombre").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (usuario === "" || password === "") {
+        mensaje.className = "mensaje error";
+        mensaje.textContent = "Error: completa el usuario y la contraseña.";
+        return;
+      }
+
+      localStorage.setItem("usuarioNombre", usuario);
+      mensaje.className = "mensaje exito";
+      mensaje.textContent = "¡Registro exitoso! Redirigiendo...";
+
+      setTimeout(function () {
+        window.location.href = "menu.html";
+      }, 1200);
+    });
+  </script>
+
+</body>
+</html>
+ 
