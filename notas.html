@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ciudad Inteligente | Calculadora de Notas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at 20% 15%, rgba(0, 229, 255, 0.08), transparent 45%), #001B3A;
+      color: #00E5FF;
+      font-family: 'Poppins', Arial, sans-serif;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+
+    .encabezado {
+      background: linear-gradient(135deg, #00E5FF, #0D47A1);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 18px 20px;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
+      margin-bottom: 24px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .encabezado:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px rgba(0, 229, 255, 0.8);
+    }
+
+    .encabezado .icono {
+      font-size: 32px;
+      line-height: 1;
+      animation: flotar 3s ease-in-out infinite;
+    }
+
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .contenedor {
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .titulo {
+      font-size: 42px;
+      color: #00E5FF;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-shadow: 0 0 18px rgba(0, 229, 255, 0.7);
+    }
+
+    .subtitulo {
+      font-size: 26px;
+      color: #00E5FF;
+      font-weight: 600;
+      margin-bottom: 14px;
+      text-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
+    }
+
+    .texto {
+      font-size: 20px;
+      color: #4FC3F7;
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .tarjeta {
+      background: #06142E;
+      border: 2px solid #00E5FF;
+      border-radius: 15px;
+      padding: 28px 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+      text-align: left;
+    }
+
+    .formulario {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .notas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 14px;
+    }
+
+    .campo label {
+      display: block;
+      font-size: 18px;
+      font-weight: 600;
+      color: #00E5FF;
+      margin-bottom: 8px;
+    }
+
+    .campo input {
+      width: 100%;
+      padding: 12px 14px;
+      background: #03142E;
+      border: 2px solid #00E5FF;
+      border-radius: 12px;
+      color: #00E5FF;
+      font-size: 20px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .campo input::placeholder {
+      color: #1F6F8B;
+    }
+
+    .campo input:focus {
+      border-color: #4FC3F7;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
+    }
+
+    .boton {
+      display: inline-block;
+      background: #00E5FF;
+      color: #000000;
+      border: 2px solid #00E5FF;
+      border-radius: 15px;
+      padding: 14px 32px;
+      font-size: 20px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+      transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .boton:hover {
+      background: #0D47A1;
+      color: #00E5FF;
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.9);
+    }
+
+    .boton:active {
+      transform: translateY(0);
+    }
+
+    .boton-secundario {
+      background: transparent;
+      color: #00E5FF;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+    }
+
+    .resultado {
+      display: none;
+      margin-top: 22px;
+      padding: 22px 18px;
+      border-radius: 15px;
+      animation: aparecer 0.5s ease both;
+    }
+
+    @keyframes aparecer {
+      from {
+        opacity: 0;
+        transform: scale(0.85);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .resultado .numero {
+      font-size: 50px;
+      font-weight: 700;
+      color: #00E5FF;
+      text-shadow: 0 0 20px rgba(0, 229, 255, 0.9);
+    }
+
+    .resultado .mensaje {
+      font-size: 34px;
+      font-weight: 700;
+      margin-top: 6px;
+      animation: rebotar 0.8s ease both;
+    }
+
+    @keyframes rebotar {
+      0% { transform: scale(0); }
+      60% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    .resultado.aprobado {
+      background: rgba(0, 229, 255, 0.1);
+      border: 2px solid #00E5FF;
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
+    }
+
+    .resultado.aprobado .mensaje {
+      color: #00E5FF;
+      text-shadow: 0 0 22px rgba(0, 229, 255, 0.9);
+    }
+
+    .resultado.reprobado {
+      background: rgba(239, 83, 80, 0.1);
+      border: 2px solid #EF5350;
+      box-shadow: 0 0 25px rgba(239, 83, 80, 0.5);
+    }
+
+    .resultado.reprobado .mensaje {
+      color: #FF8A80;
+      text-shadow: 0 0 22px rgba(239, 83, 80, 0.9);
+    }
+
+    .barra-progreso {
+      height: 14px;
+      background: #03142E;
+      border: 2px solid #00E5FF;
+      border-radius: 7px;
+      overflow: hidden;
+      margin: 12px 0;
+    }
+
+    .barra-progreso > div {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #00E5FF, #26A69A);
+      transition: width 0.8s ease;
+    }
+
+    .notas-detalle {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 12px;
+    }
+
+    .nota-chip {
+      background: #03142E;
+      border: 2px solid rgba(0, 229, 255, 0.4);
+      border-radius: 10px;
+      padding: 6px 14px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #4FC3F7;
+    }
+
+    .nota-chip.baja {
+      border-color: #EF5350;
+      color: #FF8A80;
+      box-shadow: 0 0 10px rgba(239, 83, 80, 0.4);
+    }
+
+    /* Calculadora virtual */
+    .calc {
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .calc-pantalla {
+      background: #03142E;
+      border: 2px solid #00E5FF;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: right;
+      font-size: 34px;
+      font-weight: 700;
+      color: #00E5FF;
+      min-height: 68px;
+      margin-bottom: 14px;
+      box-shadow: inset 0 0 14px rgba(0, 229, 255, 0.25);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .calc-teclado {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .tecla {
+      padding: 16px 4px;
+      background: #03142E;
+      border: 2px solid rgba(0, 229, 255, 0.4);
+      border-radius: 12px;
+      color: #00E5FF;
+      font-size: 22px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    }
+
+    .tecla:hover {
+      background: #0D47A1;
+      box-shadow: 0 0 16px rgba(0, 229, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .tecla.operador {
+      background: #0D47A1;
+      color: #FFFFFF;
+      border-color: #0D47A1;
+    }
+
+    .tecla.operador:hover {
+      background: #00E5FF;
+      color: #000000;
+    }
+
+    .tecla.igual {
+      grid-column: span 2;
+      background: #00E5FF;
+      color: #000000;
+      border-color: #00E5FF;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+    }
+
+    .tecla.limpiar {
+      background: #EF5350;
+      color: #FFFFFF;
+      border-color: #EF5350;
+      box-shadow: 0 0 12px rgba(239, 83, 80, 0.4);
+    }
+
+    .tecla.limpiar:hover {
+      background: #C62828;
+    }
+
+    .botonera {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 6px;
+    }
+
+    .pie {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 20px;
+      color: #00E5FF;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="encabezado">
+    <span class="icono">🧮</span>
+    CIUDAD INTELIGENTE · NOTAS
+  </div>
+
+  <div class="contenedor">
+    <h1 class="titulo">Calculadora de Notas</h1>
+    <p class="texto">Ingresa tus 4 calificaciones (de 1.0 a 5.0) y calcula tu promedio. Apruebas con 3.0 o más.</p>
+
+    <div class="tarjeta">
+      <h2 class="subtitulo">Mis Calificaciones</h2>
+      <form class="formulario" id="form-notas">
+        <div class="notas-grid">
+          <div class="campo">
+            <label for="nota1">Calificación 1</label>
+            <input type="number" id="nota1" min="0" max="5" step="0.1" placeholder="Ej: 4.5">
+          </div>
+          <div class="campo">
+            <label for="nota2">Calificación 2</label>
+            <input type="number" id="nota2" min="0" max="5" step="0.1" placeholder="Ej: 3.8">
+          </div>
+          <div class="campo">
+            <label for="nota3">Calificación 3</label>
+            <input type="number" id="nota3" min="0" max="5" step="0.1" placeholder="Ej: 2.9">
+          </div>
+          <div class="campo">
+            <label for="nota4">Calificación 4</label>
+            <input type="number" id="nota4" min="0" max="5" step="0.1" placeholder="Ej: 4.0">
+          </div>
+        </div>
+
+        <button type="submit" class="boton">Calcular Promedio</button>
+
+        <div class="resultado" id="resultado">
+          <p class="texto" style="margin-bottom: 6px;">Tu promedio es:</p>
+          <div class="numero" id="promedio-valor">0.0</div>
+          <div class="barra-progreso"><div id="barra-promedio"></div></div>
+          <div class="mensaje" id="promedio-mensaje">Aprobado</div>
+          <div class="notas-detalle" id="notas-detalle"></div>
+        </div>
+      </form>
+    </div>
+
+    <div class="tarjeta">
+      <h2 class="subtitulo">Calculadora Virtual</h2>
+      <p class="texto" style="margin-bottom: 14px;">Úsala para tus operaciones del día.</p>
+      <div class="calc">
+        <div class="calc-pantalla" id="calc-pantalla">0</div>
+        <div class="calc-teclado">
+          <button class="tecla limpiar" data-calc="C">C</button>
+          <button class="tecla" data-calc="±">±</button>
+          <button class="tecla" data-calc="%">%</button>
+          <button class="tecla operador" data-calc="÷">÷</button>
+          <button class="tecla" data-calc="7">7</button>
+          <button class="tecla" data-calc="8">8</button>
+          <button class="tecla" data-calc="9">9</button>
+          <button class="tecla operador" data-calc="×">×</button>
+          <button class="tecla" data-calc="4">4</button>
+          <button class="tecla" data-calc="5">5</button>
+          <button class="tecla" data-calc="6">6</button>
+          <button class="tecla operador" data-calc="-">−</button>
+          <button class="tecla" data-calc="1">1</button>
+          <button class="tecla" data-calc="2">2</button>
+          <button class="tecla" data-calc="3">3</button>
+          <button class="tecla operador" data-calc="+">+</button>
+          <button class="tecla" data-calc="0">0</button>
+          <button class="tecla" data-calc=".">.</button>
+          <button class="tecla igual" data-calc="=">=</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="botonera">
+      <a class="boton boton-secundario" href="menu.html">← Volver al Menú</a>
+    </div>
+
+    <p class="pie">© 2026 Ciudad Inteligente · Mateo Ospina Jimenez</p>
+  </div>
+
+  <script>
+    const form = document.getElementById("form-notas");
+    const resultado = document.getElementById("resultado");
+    const promedioValor = document.getElementById("promedio-valor");
+    const promedioMensaje = document.getElementById("promedio-mensaje");
+    const barraPromedio = document.getElementById("barra-promedio");
+    const notasDetalle = document.getElementById("notas-detalle");
+    const NOTA_MINIMA = 3.0;
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const ids = ["nota1", "nota2", "nota3", "nota4"];
+      const valores = ids.map(function (id) {
+        return parseFloat(document.getElementById(id).value);
+      });
+
+      if (valores.some(function (v) { return isNaN(v); })) {
+        alert("Error: ingresa las 4 calificaciones.");
+        return;
+      }
+
+      if (valores.some(function (v) { return v < 0 || v > 5; })) {
+        alert("Error: las calificaciones deben estar entre 0 y 5.");
+        return;
+      }
+
+      const promedio = valores.reduce(function (a, b) { return a + b; }, 0) / 4;
+
+      promedioValor.textContent = promedio.toFixed(1);
+      barraPromedio.style.width = (promedio / 5 * 100).toFixed(1) + "%";
+
+      notasDetalle.innerHTML = "";
+      valores.forEach(function (v, i) {
+        const chip = document.createElement("span");
+        chip.className = "nota-chip" + (v < NOTA_MINIMA ? " baja" : "");
+        chip.textContent = "Nota " + (i + 1) + ": " + v.toFixed(1);
+        notasDetalle.appendChild(chip);
+      });
+
+      if (promedio >= NOTA_MINIMA) {
+        resultado.className = "resultado aprobado";
+        promedioMensaje.textContent = "¡Aprobado! 🎉";
+      } else {
+        resultado.className = "resultado reprobado";
+        promedioMensaje.textContent = "Reprobado 😞";
+      }
+
+      resultado.style.display = "block";
+    });
+
+    const calcPantalla = document.getElementById("calc-pantalla");
+    let calcActual = "0";
+    let calcAnterior = null;
+    let calcOperador = null;
+    let calcEspera = false;
+
+    function calcRefrescar() {
+      calcPantalla.textContent = calcActual.length > 14 ? parseFloat(calcActual).toPrecision(8) : calcActual;
+    }
+
+    function calcDigito(dig) {
+      if (calcActual === "Error") {
+        calcActual = "0";
+        calcEspera = false;
+        calcOperador = null;
+        calcAnterior = null;
+      }
+      if (calcEspera) {
+        calcActual = "";
+        calcEspera = false;
+      }
+      if (dig === ".") {
+        if (calcActual.indexOf(".") !== -1) return;
+        calcActual = calcActual === "" ? "0." : calcActual + ".";
+      } else {
+        calcActual = calcActual === "0" ? dig : calcActual + dig;
+      }
+      calcRefrescar();
+    }
+
+    function calcOperar(op) {
+      if (calcActual === "Error") return;
+      if (calcAnterior !== null && calcOperador && !calcEspera) {
+        calcIgual();
+        if (calcActual === "Error") return;
+      }
+      calcAnterior = parseFloat(calcActual);
+      calcOperador = op;
+      calcEspera = true;
+    }
+
+    function calcIgual() {
+      if (calcOperador === null || calcAnterior === null) return;
+      const a = calcAnterior;
+      const b = parseFloat(calcActual);
+      let r;
+      switch (calcOperador) {
+        case "+": r = a + b; break;
+        case "-": r = a - b; break;
+        case "×": r = a * b; break;
+        case "÷": r = b === 0 ? "Error" : a / b; break;
+        case "%": r = a % b; break;
+      }
+      calcActual = typeof r === "number" ? String(Math.round(r * 1000000) / 1000000) : "Error";
+      calcAnterior = null;
+      calcOperador = null;
+      calcEspera = false;
+      calcRefrescar();
+    }
+
+    function calcLimpiar() {
+      calcActual = "0";
+      calcAnterior = null;
+      calcOperador = null;
+      calcEspera = false;
+      calcRefrescar();
+    }
+
+    function calcCambiarSigno() {
+      if (calcActual === "Error") return;
+      calcActual = String(parseFloat(calcActual) * -1);
+      calcRefrescar();
+    }
+
+    document.querySelectorAll("[data-calc]").forEach(function (tecla) {
+      tecla.addEventListener("click", function () {
+        const valor = tecla.dataset.calc;
+        if (valor === "C") calcLimpiar();
+        else if (valor === "±") calcCambiarSigno();
+        else if (valor === "=") calcIgual();
+        else if (["+", "-", "×", "÷", "%"].indexOf(valor) !== -1) calcOperar(valor);
+        else calcDigito(valor);
+      });
+    });
+
+    calcRefrescar();
+  </script>
+
+</body>
+</html>
