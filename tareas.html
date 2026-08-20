@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ciudad Inteligente | Lista de Tareas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at 20% 15%, rgba(0, 229, 255, 0.08), transparent 45%), #001B3A;
+      color: #00E5FF;
+      font-family: 'Poppins', Arial, sans-serif;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+
+    .encabezado {
+      background: linear-gradient(135deg, #00E5FF, #0D47A1);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 18px 20px;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
+      margin-bottom: 24px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .encabezado:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px rgba(0, 229, 255, 0.8);
+    }
+
+    .encabezado .icono {
+      font-size: 32px;
+      line-height: 1;
+      animation: flotar 3s ease-in-out infinite;
+    }
+
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .contenedor {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .titulo {
+      font-size: 42px;
+      color: #00E5FF;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-shadow: 0 0 18px rgba(0, 229, 255, 0.7);
+    }
+
+    .subtitulo {
+      font-size: 26px;
+      color: #00E5FF;
+      font-weight: 600;
+      margin-bottom: 14px;
+      text-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
+    }
+
+    .texto {
+      font-size: 20px;
+      color: #4FC3F7;
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .tarjeta {
+      background: #06142E;
+      border: 2px solid #00E5FF;
+      border-radius: 15px;
+      padding: 26px 22px;
+      margin-bottom: 24px;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+      text-align: left;
+    }
+
+    .formulario {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .formulario input[type="text"] {
+      flex: 1;
+      min-width: 220px;
+      padding: 13px 14px;
+      background: #03142E;
+      border: 2px solid #00E5FF;
+      border-radius: 12px;
+      color: #00E5FF;
+      font-size: 18px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .formulario input[type="date"] {
+      padding: 12px 14px;
+      background: #03142E;
+      border: 2px solid #00E5FF;
+      border-radius: 12px;
+      color: #00E5FF;
+      font-size: 18px;
+      font-family: inherit;
+      outline: none;
+      color-scheme: dark;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .formulario input:focus {
+      border-color: #4FC3F7;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
+    }
+
+    .formulario input::placeholder {
+      color: #1F6F8B;
+    }
+
+    .contador {
+      font-size: 18px;
+      color: #4FC3F7;
+      margin-bottom: 14px;
+    }
+
+    .contador span {
+      color: #00E5FF;
+      font-weight: 700;
+    }
+
+    .contador .vencidas {
+      color: #FF8A80;
+    }
+
+    .lista {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .tarea {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #06142E;
+      border: 2px solid #00E5FF;
+      border-radius: 15px;
+      padding: 12px 16px;
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      animation: aparecer 0.4s ease both;
+    }
+
+    @keyframes aparecer {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .tarea:hover {
+      transform: translateX(4px);
+      box-shadow: 0 0 24px rgba(0, 229, 255, 0.5);
+    }
+
+    .tarea.completada {
+      border-color: #26A69A;
+      box-shadow: 0 0 16px rgba(38, 166, 154, 0.35);
+    }
+
+    .tarea.vencida {
+      border-color: #EF5350;
+      box-shadow: 0 0 14px rgba(239, 83, 80, 0.3);
+    }
+
+    .caja {
+      width: 26px;
+      height: 26px;
+      min-width: 26px;
+      border: 2px solid #00E5FF;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000000;
+      font-size: 18px;
+      font-weight: 700;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .tarea.completada .caja {
+      background: #00E5FF;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.8);
+    }
+
+    .info-tarea {
+      flex: 1;
+    }
+
+    .texto-tarea {
+      font-size: 19px;
+      color: #00E5FF;
+      position: relative;
+      display: inline-block;
+      word-break: break-word;
+    }
+
+    .tarea.completada .texto-tarea::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      height: 3px;
+      width: 100%;
+      background: #00E5FF;
+      border-radius: 3px;
+      box-shadow: 0 0 8px rgba(0, 229, 255, 0.8);
+      transform-origin: left;
+      animation: tachar 0.4s ease forwards;
+    }
+
+    @keyframes tachar {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    .fecha-tarea {
+      display: block;
+      font-size: 14px;
+      color: #4FC3F7;
+      margin-top: 4px;
+    }
+
+    .fecha-tarea.vencida {
+      color: #FF8A80;
+      font-weight: 700;
+    }
+
+    .fecha-tarea.entregada {
+      color: #26A69A;
+      font-weight: 700;
+    }
+
+    .vacio {
+      font-size: 18px;
+      color: #1F6F8B;
+      text-align: center;
+      padding: 22px;
+      border: 2px dashed rgba(0, 229, 255, 0.3);
+      border-radius: 15px;
+    }
+
+    .boton {
+      display: inline-block;
+      background: #00E5FF;
+      color: #000000;
+      border: 2px solid #00E5FF;
+      border-radius: 15px;
+      padding: 13px 26px;
+      font-size: 18px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+      transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .boton:hover {
+      background: #0D47A1;
+      color: #00E5FF;
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.9);
+    }
+
+    .boton:active {
+      transform: translateY(0);
+    }
+
+    .boton-secundario {
+      background: transparent;
+      color: #00E5FF;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+    }
+
+    .boton-eliminar {
+      background: transparent;
+      color: #EF5350;
+      border-color: #EF5350;
+      box-shadow: 0 0 10px rgba(239, 83, 80, 0.3);
+      padding: 8px 16px;
+      font-size: 18px;
+    }
+
+    .boton-eliminar:hover {
+      background: #C62828;
+      color: #FFFFFF;
+      border-color: #EF5350;
+      box-shadow: 0 0 28px rgba(239, 83, 80, 0.8);
+    }
+
+    .botonera {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 8px;
+    }
+
+    .tabla-wrapper {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 2px solid #00E5FF;
+      margin-top: 10px;
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.35);
+    }
+
+    .tabla {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 16px;
+    }
+
+    .tabla th,
+    .tabla td {
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      padding: 8px 10px;
+      text-align: center;
+    }
+
+    .tabla th {
+      background: linear-gradient(135deg, #00E5FF, #0D47A1);
+      color: #FFFFFF;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .tabla td {
+      color: #4FC3F7;
+    }
+
+    .tabla tr:nth-child(even) td {
+      background: rgba(0, 229, 255, 0.06);
+    }
+
+    .tabla tr:hover td {
+      background: rgba(0, 229, 255, 0.16);
+      color: #00E5FF;
+    }
+
+    /* Calculadora virtual */
+    .calc {
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .calc-pantalla {
+      background: #03142E;
+      border: 2px solid #00E5FF;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: right;
+      font-size: 34px;
+      font-weight: 700;
+      color: #00E5FF;
+      min-height: 68px;
+      margin-bottom: 14px;
+      box-shadow: inset 0 0 14px rgba(0, 229, 255, 0.25);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .calc-teclado {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .tecla {
+      padding: 16px 4px;
+      background: #03142E;
+      border: 2px solid rgba(0, 229, 255, 0.4);
+      border-radius: 12px;
+      color: #00E5FF;
+      font-size: 22px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    }
+
+    .tecla:hover {
+      background: #0D47A1;
+      box-shadow: 0 0 16px rgba(0, 229, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .tecla.operador {
+      background: #0D47A1;
+      color: #FFFFFF;
+      border-color: #0D47A1;
+    }
+
+    .tecla.operador:hover {
+      background: #00E5FF;
+      color: #000000;
+    }
+
+    .tecla.igual {
+      grid-column: span 2;
+      background: #00E5FF;
+      color: #000000;
+      border-color: #00E5FF;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+    }
+
+    .tecla.limpiar {
+      background: #EF5350;
+      color: #FFFFFF;
+      border-color: #EF5350;
+      box-shadow: 0 0 12px rgba(239, 83, 80, 0.4);
+    }
+
+    .tecla.limpiar:hover {
+      background: #C62828;
+    }
+
+    .pie {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 20px;
+      color: #00E5FF;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="encabezado">
+    <span class="icono">✅</span>
+    CIUDAD INTELIGENTE · TAREAS
+  </div>
+
+  <div class="contenedor">
+    <h1 class="titulo">Lista de Tareas</h1>
+    <p class="texto">Agrega tareas con fecha de entrega y tócalas para marcarlas como completadas.</p>
+
+    <div class="tarjeta">
+      <h2 class="subtitulo">Mis Tareas</h2>
+      <div class="formulario">
+        <input type="text" id="nueva-tarea" placeholder="Escribe una nueva tarea...">
+        <input type="date" id="fecha-tarea">
+        <button class="boton" id="btn-agregar">Agregar</button>
+      </div>
+
+      <p class="contador">
+        Pendientes: <span id="contador">0</span>
+        · Vencidas: <span class="vencidas" id="contador-vencidas">0</span>
+      </p>
+
+      <div class="lista" id="lista-tareas"></div>
+    </div>
+
+    <div class="tarjeta">
+      <h2 class="subtitulo">Horario Escolar</h2>
+      <p class="texto" style="margin-bottom: 10px;">Mi horario semanal de clases en grado 9A.</p>
+      <div class="tabla-wrapper">
+        <table class="tabla">
+          <tr>
+            <th>Día 1</th>
+            <th>Día 2</th>
+            <th>Día 3</th>
+            <th>Día 4</th>
+            <th>Día 5</th>
+            <th>Día 6</th>
+            <th>Día 7</th>
+          </tr>
+          <tr>
+            <td>Biología</td>
+            <td>Edu. Física</td>
+            <td>Español</td>
+            <td>Francés</td>
+            <td>Biología</td>
+            <td>Edu. Física</td>
+            <td>Inglés</td>
+          </tr>
+          <tr>
+            <td>Matemáticas</td>
+            <td>Sociales</td>
+            <td>Sociales</td>
+            <td>Español</td>
+            <td>Matemáticas</td>
+            <td>Inglés</td>
+            <td>Sociales</td>
+          </tr>
+          <tr>
+            <td>Descanso</td>
+            <td>Descanso</td>
+            <td>Descanso</td>
+            <td>Descanso</td>
+            <td>Descanso</td>
+            <td>Descanso</td>
+            <td>Descanso</td>
+          </tr>
+          <tr>
+            <td>Español</td>
+            <td>Filosofía</td>
+            <td>Matemáticas</td>
+            <td>Informática</td>
+            <td>Inglés</td>
+            <td>Francés</td>
+            <td>Informática</td>
+          </tr>
+          <tr>
+            <td>Sociales</td>
+            <td>Matemáticas</td>
+            <td>Física</td>
+            <td>Inglés</td>
+            <td>Sociales</td>
+            <td>Matemáticas</td>
+            <td>Química</td>
+          </tr>
+          <tr>
+            <td>Francés</td>
+            <td>SKILLS</td>
+            <td>Danzas</td>
+            <td>Ética</td>
+            <td>Dibujo</td>
+            <td>Sociales</td>
+            <td>Biología</td>
+          </tr>
+          <tr>
+            <td>Cátedra</td>
+            <td>Español</td>
+            <td>PILEO</td>
+            <td>Dibujo</td>
+            <td>PILEO</td>
+            <td>Español</td>
+            <td>Inglés</td>
+          </tr>
+          <tr>
+            <td>Inglés</td>
+            <td>Inglés</td>
+            <td>Biología</td>
+            <td>Matemáticas</td>
+            <td>Danzas</td>
+            <td>Informática</td>
+            <td>Matemáticas</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="tarjeta">
+      <h2 class="subtitulo">Calculadora Virtual</h2>
+      <p class="texto" style="margin-bottom: 14px;">Úsala para calcular tus notas o tareas.</p>
+      <div class="calc">
+        <div class="calc-pantalla" id="calc-pantalla">0</div>
+        <div class="calc-teclado">
+          <button class="tecla limpiar" data-calc="C">C</button>
+          <button class="tecla" data-calc="±">±</button>
+          <button class="tecla" data-calc="%">%</button>
+          <button class="tecla operador" data-calc="÷">÷</button>
+          <button class="tecla" data-calc="7">7</button>
+          <button class="tecla" data-calc="8">8</button>
+          <button class="tecla" data-calc="9">9</button>
+          <button class="tecla operador" data-calc="×">×</button>
+          <button class="tecla" data-calc="4">4</button>
+          <button class="tecla" data-calc="5">5</button>
+          <button class="tecla" data-calc="6">6</button>
+          <button class="tecla operador" data-calc="-">−</button>
+          <button class="tecla" data-calc="1">1</button>
+          <button class="tecla" data-calc="2">2</button>
+          <button class="tecla" data-calc="3">3</button>
+          <button class="tecla operador" data-calc="+">+</button>
+          <button class="tecla" data-calc="0">0</button>
+          <button class="tecla" data-calc=".">.</button>
+          <button class="tecla igual" data-calc="=">=</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="botonera">
+      <a class="boton boton-secundario" href="menu.html">← Volver al Menú</a>
+    </div>
+
+    <p class="pie">© 2026 Ciudad Inteligente · Mateo Ospina Jimenez</p>
+  </div>
+
+  <script>
+    const CLAVE = "listaTareas";
+    const entrada = document.getElementById("nueva-tarea");
+    const fechaInput = document.getElementById("fecha-tarea");
+    const btnAgregar = document.getElementById("btn-agregar");
+    const lista = document.getElementById("lista-tareas");
+    const contador = document.getElementById("contador");
+    const contadorVencidas = document.getElementById("contador-vencidas");
+
+    function obtenerTareas() {
+      const datos = localStorage.getItem(CLAVE);
+      return datos ? JSON.parse(datos) : [];
+    }
+
+    function guardarTareas(tareas) {
+      localStorage.setItem(CLAVE, JSON.stringify(tareas));
+    }
+
+    function hoyISO() {
+      return new Date().toISOString().split("T")[0];
+    }
+
+    function fechaLegible(iso) {
+      if (!iso) return "Sin fecha";
+      const partes = iso.split("-");
+      return partes[2] + "/" + partes[1] + "/" + partes[0];
+    }
+
+    function estaVencida(tarea) {
+      return tarea.fecha && !tarea.completada && tarea.fecha < hoyISO();
+    }
+
+    function actualizarContadores() {
+      const tareas = obtenerTareas();
+      const pendientes = tareas.filter(function (t) { return !t.completada; }).length;
+      const vencidas = tareas.filter(estaVencida).length;
+      contador.textContent = pendientes;
+      contadorVencidas.textContent = vencidas;
+    }
+
+    function renderizar() {
+      const tareas = obtenerTareas();
+      tareas.sort(function (a, b) {
+        if (a.completada !== b.completada) return a.completada ? 1 : -1;
+        if (!a.fecha) return 1;
+        if (!b.fecha) return -1;
+        return a.fecha.localeCompare(b.fecha);
+      });
+
+      lista.innerHTML = "";
+      actualizarContadores();
+
+      if (tareas.length === 0) {
+        lista.innerHTML = '<p class="vacio">No tienes tareas. ¡Agrega una!</p>';
+        return;
+      }
+
+      tareas.forEach(function (tarea) {
+        const div = document.createElement("div");
+        div.className = "tarea" +
+          (tarea.completada ? " completada" : "") +
+          (estaVencida(tarea) ? " vencida" : "");
+
+        const caja = document.createElement("span");
+        caja.className = "caja";
+        caja.textContent = tarea.completada ? "✔" : "";
+
+        const info = document.createElement("span");
+        info.className = "info-tarea";
+
+        const textoEl = document.createElement("span");
+        textoEl.className = "texto-tarea";
+        textoEl.textContent = tarea.texto;
+
+        const fechaEl = document.createElement("span");
+        fechaEl.className = "fecha-tarea";
+        if (tarea.fecha) {
+          fechaEl.textContent = "📅 Entrega: " + fechaLegible(tarea.fecha);
+          if (tarea.completada) {
+            fechaEl.textContent += " · ✅ Entregada";
+            fechaEl.classList.add("entregada");
+          } else if (tarea.fecha < hoyISO()) {
+            fechaEl.textContent += " · ⚠️ Vencida";
+            fechaEl.classList.add("vencida");
+          }
+        } else {
+          fechaEl.textContent = "Sin fecha de entrega";
+        }
+
+        info.appendChild(textoEl);
+        info.appendChild(fechaEl);
+
+        const btnEliminar = document.createElement("button");
+        btnEliminar.className = "boton boton-eliminar";
+        btnEliminar.textContent = "✕";
+
+        div.addEventListener("click", function () {
+          tarea.completada = !tarea.completada;
+          guardarTareas(tareas);
+          renderizar();
+        });
+
+        btnEliminar.addEventListener("click", function (e) {
+          e.stopPropagation();
+          const actualizadas = obtenerTareas().filter(function (t) {
+            return t.id !== tarea.id;
+          });
+          guardarTareas(actualizadas);
+          renderizar();
+        });
+
+        div.appendChild(caja);
+        div.appendChild(info);
+        div.appendChild(btnEliminar);
+        lista.appendChild(div);
+      });
+    }
+
+    function agregarTarea() {
+      const texto = entrada.value.trim();
+      if (texto === "") return;
+
+      const tareas = obtenerTareas();
+      tareas.unshift({
+        id: Date.now(),
+        texto: texto,
+        fecha: fechaInput.value || "",
+        completada: false
+      });
+      guardarTareas(tareas);
+      entrada.value = "";
+      fechaInput.value = "";
+      renderizar();
+      entrada.focus();
+    }
+
+    btnAgregar.addEventListener("click", agregarTarea);
+    entrada.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        agregarTarea();
+      }
+    });
+
+    fechaInput.value = "";
+
+    const calcPantalla = document.getElementById("calc-pantalla");
+    let calcActual = "0";
+    let calcAnterior = null;
+    let calcOperador = null;
+    let calcEspera = false;
+
+    function calcRefrescar() {
+      calcPantalla.textContent = calcActual.length > 14 ? parseFloat(calcActual).toPrecision(8) : calcActual;
+    }
+
+    function calcDigito(dig) {
+      if (calcActual === "Error") {
+        calcActual = "0";
+        calcEspera = false;
+        calcOperador = null;
+        calcAnterior = null;
+      }
+      if (calcEspera) {
+        calcActual = "";
+        calcEspera = false;
+      }
+      if (dig === ".") {
+        if (calcActual.indexOf(".") !== -1) return;
+        calcActual = calcActual === "" ? "0." : calcActual + ".";
+      } else {
+        calcActual = calcActual === "0" ? dig : calcActual + dig;
+      }
+      calcRefrescar();
+    }
+
+    function calcOperar(op) {
+      if (calcActual === "Error") return;
+      if (calcAnterior !== null && calcOperador && !calcEspera) {
+        calcIgual();
+        if (calcActual === "Error") return;
+      }
+      calcAnterior = parseFloat(calcActual);
+      calcOperador = op;
+      calcEspera = true;
+    }
+
+    function calcIgual() {
+      if (calcOperador === null || calcAnterior === null) return;
+      const a = calcAnterior;
+      const b = parseFloat(calcActual);
+      let r;
+      switch (calcOperador) {
+        case "+": r = a + b; break;
+        case "-": r = a - b; break;
+        case "×": r = a * b; break;
+        case "÷": r = b === 0 ? "Error" : a / b; break;
+        case "%": r = a % b; break;
+      }
+      calcActual = typeof r === "number" ? String(Math.round(r * 1000000) / 1000000) : "Error";
+      calcAnterior = null;
+      calcOperador = null;
+      calcEspera = false;
+      calcRefrescar();
+    }
+
+    function calcLimpiar() {
+      calcActual = "0";
+      calcAnterior = null;
+      calcOperador = null;
+      calcEspera = false;
+      calcRefrescar();
+    }
+
+    function calcCambiarSigno() {
+      if (calcActual === "Error") return;
+      calcActual = String(parseFloat(calcActual) * -1);
+      calcRefrescar();
+    }
+
+    document.querySelectorAll("[data-calc]").forEach(function (tecla) {
+      tecla.addEventListener("click", function () {
+        const valor = tecla.dataset.calc;
+        if (valor === "C") calcLimpiar();
+        else if (valor === "±") calcCambiarSigno();
+        else if (valor === "=") calcIgual();
+        else if (["+", "-", "×", "÷", "%"].indexOf(valor) !== -1) calcOperar(valor);
+        else calcDigito(valor);
+      });
+    });
+
+    calcRefrescar();
+    renderizar();
+  </script>
+
+</body>
+</html>
